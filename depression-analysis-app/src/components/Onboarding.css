@@ -1,0 +1,33 @@
+.onboarding-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background-color: #e9ecef;
+  }
+  
+  .onboarding-box {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .onboarding-box h2 {
+    margin-bottom: 20px;
+  }
+  
+  .onboarding-box p {
+    color: #6c757d;
+    margin-bottom: 20px;
+  }
+  
+  .onboarding-box .btn {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
