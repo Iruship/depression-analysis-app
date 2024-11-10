@@ -1,53 +1,62 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import axios from 'axios';
 
 const Login = () => {
+  const [isSignup, setIsSignup] = useState(false);
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
-  const [showSignup, setShowSignup] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === 'user' && password === 'pass') {
-      navigate('/onboarding');
-    } else {
-      alert('Incorrect username or password');
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        username,
+        password,
+      });
+      localStorage.setItem('token', response.data.token);
+      alert('Login successful');
+      navigate('/onboarding'); // Redirect to Onboarding, will change later
+    } catch (error) {
+      alert('Login failed: ' + (error.response?.data?.message || error.message));
+      console.error('Login error:', error);
     }
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
-    // Sample API call for sign-up (commented out for now)
-    /*
-    axios.post('/api/signup', { name, username, email, password })
-      .then(response => {
-        console.log('User signed up:', response.data);
-        setShowSignup(false);
-      })
-      .catch(error => {
-        console.error('There was an error signing up:', error);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+        name,
+        username,
+        email,
+        password,
       });
-    */
-    console.log({ name, username, email, password }); // Placeholder to see form data
-    setShowSignup(false); // Switch back to login view after signup
+      alert(response.data.message);
+      setIsSignup(false); // Switch back 
+    } catch (error) {
+      alert('Signup failed: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>{showSignup ? 'Sign Up' : 'Login'}</h2>
-        <form onSubmit={showSignup ? handleSignup : handleLogin}>
-          {showSignup && (
+        <h2>{isSignup ? 'Sign Up' : 'Login'}</h2>
+        <form onSubmit={isSignup ? handleSignup : handleLogin}>
+          {isSignup && (
             <>
               <input
                 type="text"
@@ -86,7 +95,7 @@ const Login = () => {
               />
             </>
           )}
-          {!showSignup && (
+          {!isSignup && (
             <>
               <input
                 type="text"
@@ -105,13 +114,13 @@ const Login = () => {
             </>
           )}
           <button type="submit" className="btn btn-primary">
-            {showSignup ? 'Sign Up' : 'Login'}
+            {isSignup ? 'Sign Up' : 'Login'}
           </button>
-          {showSignup ? (
+          {isSignup ? (
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => setShowSignup(false)}
+              onClick={() => setIsSignup(false)}
             >
               Cancel
             </button>
@@ -119,7 +128,7 @@ const Login = () => {
             <button
               type="button"
               className="btn btn-link"
-              onClick={() => setShowSignup(true)}
+              onClick={() => setIsSignup(true)}
             >
               Sign Up
             </button>
