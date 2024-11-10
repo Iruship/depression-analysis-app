@@ -16,4 +16,16 @@ router.post('/phq-test', async (req, res) => {
   }
 });
 
+// Route to get all PHQ-9 test results for a user
+router.get('/phq-test/:userId', async (req, res) => {  // Prefix with /phq-test
+  const { userId } = req.params;
+
+  try {
+    const results = await PHQTestResult.find({ userId }).sort({ date: -1 });
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching test results', error });
+  }
+});
+
 module.exports = router;
