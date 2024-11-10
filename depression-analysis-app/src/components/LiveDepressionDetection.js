@@ -8,7 +8,7 @@ const LiveDepressionDetection = () => {
   const [depressionLevel, setDepressionLevel] = useState(0); // Depression level state
   const [dominantEmotion, setDominantEmotion] = useState(''); // Dominant emotion label
   const navigate = useNavigate();
-  const modelPath = 'model/model.json'; // Path to your model
+  const modelPath = 'model/model.json'; // Path to trained model
   const frameBuffer = []; // Buffer to hold previous frame scores for averaging
 
   // Load the model on component mount
@@ -71,7 +71,6 @@ const LiveDepressionDetection = () => {
     processFrame();
   };
 
-  // Preprocess frame by resizing, normalizing, and enhancing
   const preprocessFrame = (frame) => {
     return frame
       .resizeNearestNeighbor([48, 48]) // Resize to model's input size
@@ -100,7 +99,7 @@ const LiveDepressionDetection = () => {
       score += pred * depressionWeights[emotion];
     });
 
-    return Math.round(score * 100); // Convert to a percentage-like score
+    return Math.round(score * 100);
   };
 
   // Maintain a moving average of depression scores for stability

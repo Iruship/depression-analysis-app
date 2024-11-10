@@ -1,0 +1,40 @@
+.phq-test-container {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .question {
+    border: 1px solid #e3e3e3;
+  }
+  
+  .options label {
+    font-size: 1.1em;
+    margin-right: 15px;
+    cursor: pointer;
+  }
+  
+  .results {
+    background-color: #f9f9f9;
+    border: 1px solid #e3e3e3;
+    margin-top: 20px;
+  }
+  
+  .results h2 {
+    font-size: 1.5em;
+  }
+  
+  .helplines {
+    margin-top: 15px;
+  }
+  
+  .btn-primary {
+    font-weight: bold;
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .text-warning {
+    font-weight: bold;
+    color: #856404;
+  }
+  

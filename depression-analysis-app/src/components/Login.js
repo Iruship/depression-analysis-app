@@ -24,6 +24,8 @@ const Login = () => {
         password,
       });
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.userId);
+      localStorage.setItem('username', username);
       toast.success('Login successful');
       navigate('/onboarding');
     } catch (error) {
