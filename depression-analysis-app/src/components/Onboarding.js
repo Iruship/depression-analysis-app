@@ -9,7 +9,7 @@ const Onboarding = () => {
     try {
       await navigator.mediaDevices.getUserMedia({ video: true });
       alert('Camera access granted');
-      navigate('/live-stress-detection');
+      navigate('/live-depression-detection');
     } catch (error) {
       alert('Camera access denied');
     }
