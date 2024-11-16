@@ -3,9 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
 
-const Dashboard = ({ userId, username }) => {
+const Dashboard = () => {
   const [scores, setScores] = useState([]); // To hold PHQ-9 scores
   const navigate = useNavigate();
+
+  // Retrieve userId and username from local storage
+  const userId = localStorage.getItem('userId');
+  const username = localStorage.getItem('username');
+
+  // Redirect to login if no userId is available
+  useEffect(() => {
+    if (!userId) {
+      navigate('/');
+    }
+  }, [userId, navigate]);
 
   // Fetch user's PHQ-9 scores from the database
   useEffect(() => {
@@ -17,14 +28,19 @@ const Dashboard = ({ userId, username }) => {
         console.error("Error fetching scores:", error);
       }
     };
-    
-    fetchScores();
+
+    if (userId) {
+      fetchScores();
+    }
   }, [userId]);
 
   // Handle logout
   const handleLogout = () => {
-    // Clear any session data (e.g., tokens) if necessary
-    navigate('/login');
+    // Clear local storage and navigate to login
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    navigate('/');
   };
 
   return (
@@ -32,7 +48,7 @@ const Dashboard = ({ userId, username }) => {
       {/* Side Panel */}
       <div className="side-panel">
         <div className="user-info">
-          <h2>Welcome {username} !</h2>
+          <h2>Welcome, {username}</h2>
         </div>
         <div className="logout">
           <button onClick={handleLogout}>Logout</button>

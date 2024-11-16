@@ -14,6 +14,7 @@ test_dir = os.path.join(base_dir, 'test')
 train_datagen = ImageDataGenerator(rescale=1.0/255, horizontal_flip=True, rotation_range=10)
 test_datagen = ImageDataGenerator(rescale=1.0/255)
 
+# Preprocess image data set 
 train_data = train_datagen.flow_from_directory(
     train_dir,
     target_size=(48, 48),

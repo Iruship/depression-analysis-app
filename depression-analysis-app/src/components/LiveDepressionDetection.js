@@ -48,12 +48,14 @@ const LiveDepressionDetection = () => {
       });
   };
 
+// stop video feed
   const stopVideoFeed = () => {
     if (videoRef.current && videoRef.current.srcObject) {
       videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     }
   };
 
+// process frame by frame
   const processFrames = (model) => {
     const processFrame = async () => {
       if (videoRef.current && videoRef.current.videoWidth > 0 && videoRef.current.videoHeight > 0) {
@@ -80,7 +82,8 @@ const LiveDepressionDetection = () => {
       .div(tf.scalar(255.0)); // Normalize pixel values
   };
 
-  // Calculate a depression score based on prediction values
+  // Calculate a depression score based on prediction values. Teste values need to change and test
+  // and fine tune in further testing process in-order to get maximum efficient results
   const calculateDepressionScore = (predictions) => {
     const depressionWeights = {
       Angry: 0.9,

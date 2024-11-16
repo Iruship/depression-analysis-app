@@ -1,85 +1,153 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
-import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './Login.css';
 
-const Dashboard = () => {
-  const [scores, setScores] = useState([]); // To hold PHQ-9 scores
+const Login = () => {
+  const [isSignup, setIsSignup] = useState(false);
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
   const navigate = useNavigate();
 
-  // Retrieve userId and username from local storage
-  const userId = localStorage.getItem('userId');
-  const username = localStorage.getItem('username');
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  // Fetch user's PHQ-9 scores from the database
-  useEffect(() => {
-    const fetchScores = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/phq-test/${userId}`);
-        setScores(response.data);
-      } catch (error) {
-        console.error("Error fetching scores:", error);
-      }
-    };
-
-    if (userId) {
-      fetchScores();
-    } else {
-      console.error("User ID not found in local storage");
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        username,
+        password,
+      });
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.userId);
+      localStorage.setItem('username', username);
+      toast.success('Login successful');
+      navigate('/onboarding');
+    } catch (error) {
+      toast.error('Login failed: ' + (error.response?.data?.message || error.message));
     }
-  }, [userId]);
+  };
 
-  // Handle logout
-  const handleLogout = () => {
-    // Clear local storage and navigate to login
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
-    navigate('/login');
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+        name,
+        username,
+        email,
+        password,
+      });
+      toast.success(response.data.message);
+      setIsSignup(false);
+    } catch (error) {
+      toast.error('Signup failed: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
-    <div className="dashboard-container">
-      {/* Side Panel */}
-      <div className="side-panel">
-        <div className="user-info">
-          <h2>Welcome, {username}</h2>
-        </div>
-        <div className="logout">
-          <button onClick={handleLogout}>Logout</button>
-        </div>
+    <div className="login-page">
+      <ToastContainer />
+      <div className="curved-background">
+        <h1 className="left-title">Are You In Problem?</h1>
       </div>
-
-      {/* Main Content Area */}
-      <div className="main-content">
-        <h1>PHQ-9 Test Scores</h1>
-        <table className="score-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {scores.length > 0 ? (
-              scores.map((score) => (
-                <tr key={score._id}>
-                  <td>{new Date(score.date).toLocaleDateString()}</td>
-                  <td>{new Date(score.date).toLocaleTimeString()}</td>
-                  <td>{score.score}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3">No test scores available</td>
-              </tr>
+      <h2 className="right-title">Check Your Depression Level</h2>
+      <div className="login-container">
+        <div className="login-box">
+          <h2>{isSignup ? 'Sign Up' : 'Login'}</h2>
+          <form onSubmit={isSignup ? handleSignup : handleLogin}>
+            {isSignup && (
+              <>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </>
             )}
-          </tbody>
-        </table>
+            {!isSignup && (
+              <>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </>
+            )}
+            <button type="submit" className="btn btn-primary">
+              {isSignup ? 'Sign Up' : 'Login'}
+            </button>
+            {isSignup ? (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setIsSignup(false)}
+              >
+                Cancel
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setIsSignup(true)}
+              >
+                Sign Up
+              </button>
+            )}
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Login;
