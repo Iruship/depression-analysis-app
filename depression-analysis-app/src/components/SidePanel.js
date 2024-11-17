@@ -6,11 +6,9 @@ import './SidePanel.css';
 const SidePanel = ({ username }) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Clear local storage if needed
-    // localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    // localStorage.removeItem('username');
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.clear(); 
     navigate('/');
   };
 

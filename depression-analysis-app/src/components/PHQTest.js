@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './PHQTest.css';
-import { Link } from 'react-router-dom';
 
 const PHQTest = () => {
   const [answers, setAnswers] = useState(Array(9).fill(0));
   const [score, setScore] = useState(null);
   const [message, setMessage] = useState("");
 
-  // Retrieve username and userId from localStorage
+  const navigate = useNavigate();
   const username = localStorage.getItem('username');
   const userId = localStorage.getItem('userId');
+
+  // Redirect to login if userId is missing
+  useEffect(() => {
+    if (!userId) {
+      navigate('/');
+    }
+  }, [userId, navigate]);
 
   const questions = [
     "Little interest or pleasure in doing things",
@@ -63,7 +70,6 @@ const PHQTest = () => {
 
   const saveTestResult = async (totalScore) => {
     try {
-      // Ensure username and userId are available
       if (!username || !userId) {
         toast.error("User information not found. Please log in again.");
         return;

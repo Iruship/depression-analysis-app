@@ -24,13 +24,13 @@ const HelpLine = () => {
           {/* Box 1 */}
           <div className="helpline-box">
             <h2>National Institute of Mental Health</h2>
-            <p>Email: info@nimh.health.gov.lk</p>
-            <p>Location: National Institute of Mental Health, Mulleriyawa New Town</p>
-            <p>Details:</p>
+            <p><b>Details: </b>Provide comprehensive and evidence based Mental Health Services appropriate to the Local Context through state of the art approaches to patient care, capacity building, advocacy, community engagement, multi-sector collaboration and research delivered by competent and reliable staff</p>
+            <p><b>Email: </b> info@nimh.health.gov.lk</p>
+            <p><b>Location: </b> National Institute of Mental Health, Mulleriyawa New Town</p>
             <ul>
-              <li>National Mental Health Helpline: 1926</li>
-              <li>Day Treatment Centre: +94112578556</li>
-              <li>Dementia Hotline: +94113140844</li>
+              <li><b>National Mental Health Helpline:</b> 1926</li>
+              <li><b>Day Treatment Centre:</b> +94112578556</li>
+              <li><b>Dementia Hotline: </b>+94113140844</li>
             </ul>
             <a href="https://nimh.health.gov.lk/en/" target="_blank" rel="noopener noreferrer">
               Visit Website
@@ -49,7 +49,7 @@ const HelpLine = () => {
           {/* Box 2 */}
           <div className="helpline-box">
             <h2>National Council for Mental Health</h2>
-            <p>Details:</p>
+            <p><b>Details: </b> The National Council for Mental Health - NCMH is a non profit non governmental organization, working towards the development of mental health and mental health care in Sri Lanka. Established in 1982, it was incorporated by an Act of Parliament in 1986 and is a registered charity with the Ministry of Finance. NCMH maintains the Borella Resource Centre and the Gorakana Residential Facility.</p>
             <ul>
               <li>
                 <strong>Resource Centre:</strong>
@@ -83,8 +83,13 @@ const HelpLine = () => {
           {/* Box 3 */}
           <div className="helpline-box">
             <h2>Sri Lanka Sumithrayo</h2>
-            <p>Details: Sri Lanka Sumithrayo offers emotional support to those who are lonely, depressed, despairing, and in danger of taking their own lives.</p>
-            <p>Hotlines: +94 767 520 620, +94 707 308 308</p>
+            <p><b>Details:</b> Sri Lanka Sumithrayo offers emotional support to those who are lonely, depressed, despairing, and in danger of taking their own lives. <br/>
+            Providing Emotional support for people to develop coping skills and deal with everyday stress and strains of life
+            </p>
+            <p><b>Address: </b> 60/7, Horton Place, Colombo, Sri Lanka</p>
+            <p><b>Email: </b> info.slsumithrayo@gmail.com</p>
+            <p><b>Hotlines:</b> +94 707 308 308</p>
+            <p><b>Whatsapp:</b> +94 767 520 620</p>            
             <a href="https://srilankasumithrayo.lk/" target="_blank" rel="noopener noreferrer">
               Visit Website
             </a>

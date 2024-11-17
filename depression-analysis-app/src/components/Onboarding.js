@@ -28,7 +28,7 @@ const Onboarding = () => {
     <div className="onboarding-container">
       {/* Left side: Welcome message, description, privacy policy, and warning */}
       <div className="onboarding-left">
-        <h2>Hi {username}, Welcome to the Depression Analysis App</h2>
+        <h2>Hi {username}, Welcome to the Depression Analysis Research Application</h2>
         <p>This app provides insights into mental health using image analysis and self-assessment tools.</p>
         <div className="privacy-policy">
           <h3>Privacy Policy</h3>

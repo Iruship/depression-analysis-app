@@ -17,7 +17,8 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    localStorage.clear();
+    
     // Check if the user is logging in as admin
     if (username === 'admin' && password === 'admin') {
       toast.success('Logged in as Admin');

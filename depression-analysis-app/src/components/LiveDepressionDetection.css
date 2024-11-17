@@ -1,0 +1,68 @@
+.live-depression-detection {
+    padding: 20px;
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .live-detection,
+  .image-detection {
+    flex: 1;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .video-container,
+  .image-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ececec;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .video-container video,
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+  }
+  
+  .placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+    font-size: 60px;
+  }
+  
+  .stats {
+    margin-top: 10px;
+  }
+  
+  .depression-level,
+  .emotion {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .depression-level span,
+  .emotion span {
+    color: #007bff;
+  }
+  
