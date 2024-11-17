@@ -18,6 +18,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Check if the user is logging in as admin
+    if (username === 'admin' && password === 'admin') {
+      toast.success('Logged in as Admin');
+      navigate('/admin-dashboard'); // Redirect to Admin Dashboard
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', {
         username,

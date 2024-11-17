@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Line } from 'react-chartjs-2';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import './Dashboard.css';
+import SidePanel from './SidePanel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClipboard, faChartLine, faMedkit, faCalendarAlt, faDownload } from '@fortawesome/free-solid-svg-icons';
+
+// Register required components for Chart.js
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
-  const [scores, setScores] = useState([]); // To hold PHQ-9 scores
+  const [scores, setScores] = useState([]);
   const navigate = useNavigate();
 
   // Retrieve userId and username from local storage
@@ -25,7 +44,7 @@ const Dashboard = () => {
         const response = await axios.get(`http://localhost:5000/api/phq-test/${userId}`);
         setScores(response.data);
       } catch (error) {
-        console.error("Error fetching scores:", error);
+        console.error('Error fetching scores:', error);
       }
     };
 
@@ -34,54 +53,148 @@ const Dashboard = () => {
     }
   }, [userId]);
 
-  // Handle logout
-  const handleLogout = () => {
-    // Clear local storage and navigate to login
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
-    navigate('/');
+  // Prepare data for the chart
+  const chartData = {
+    labels: scores.map((score) => new Date(score.date).toLocaleDateString()),
+    datasets: [
+      {
+        label: 'PHQ-9 Test Scores',
+        data: scores.map((score) => score.score),
+        borderColor: '#88c8f7',
+        backgroundColor: 'rgba(136, 200, 247, 0.2)',
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Score',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
+
+  // Function to download table data as PDF
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text('PHQ-9 Test Score Details', 14, 10); // Title of the PDF
+
+    // Define the table headers and rows
+    const tableColumn = ['Date', 'Time', 'Score'];
+    const tableRows = scores.map((score) => [
+      new Date(score.date).toLocaleDateString(),
+      new Date(score.date).toLocaleTimeString(),
+      score.score,
+    ]);
+
+    // Add table to the PDF
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20,
+    });
+
+    // Save the PDF
+    doc.save('phq9-test-scores.pdf');
   };
 
   return (
     <div className="dashboard-container">
-      {/* Side Panel */}
-      <div className="side-panel">
-        <div className="user-info">
-          <h2>Welcome, {username}</h2>
-        </div>
-        <div className="logout">
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      </div>
+      {/* Use SidePanel */}
+      <SidePanel username={username} />
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <div className="main-content">
-        <h1>PHQ-9 Test Scores</h1>
-        <table className="score-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {scores.length > 0 ? (
-              scores.map((score) => (
-                <tr key={score._id}>
-                  <td>{new Date(score.date).toLocaleDateString()}</td>
-                  <td>{new Date(score.date).toLocaleTimeString()}</td>
-                  <td>{score.score}</td>
+        <h1 className="dashboard-heading">Dashboard</h1>
+        <hr />
+
+        {/* Statistic Boxes */}
+        <div className="stats-boxes">
+          <div className="stats-box">
+            <FontAwesomeIcon icon={faClipboard} className="box-icon" />
+            <div>Total Tests</div>
+            <div>{scores.length}</div>
+          </div>
+          <div className="stats-box">
+            <FontAwesomeIcon icon={faChartLine} className="box-icon" />
+            <div>Average Score</div>
+            <div>
+              {scores.length > 0 ? (scores.reduce((a, b) => a + b.score, 0) / scores.length).toFixed(2) : 0}
+            </div>
+          </div>
+          <div className="stats-box">
+            <FontAwesomeIcon icon={faCalendarAlt} className="box-icon" />
+            <div>Highest Score</div>
+            <div>{scores.length > 0 ? Math.max(...scores.map((s) => s.score)) : 0}</div>
+          </div>
+          <div
+            className="stats-box clickable-box"
+            onClick={() =>
+              window.open('https://nimh.health.gov.lk/en/appointment-form-navodaya-patient-booking-system/', '_blank')
+            }
+          >
+            <FontAwesomeIcon icon={faMedkit} className="box-icon" />
+            <div>Make Doctor Appointment</div>
+          </div>
+        </div>
+
+        {/* Chart and Table */}
+        <div className="chart-and-table">
+          <div className="chart-container">
+            <h3>PHQ-9 Test Trends</h3>
+            <Line data={chartData} options={chartOptions} />
+          </div>
+
+          <div className="table-container">
+            <div className="table-header">
+              <h3>Test Score Details</h3>
+              <button className="download-button" onClick={downloadPDF}>
+                <FontAwesomeIcon icon={faDownload} /> Download PDF
+              </button>
+            </div>
+            <table className="score-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Score</th>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3">No test scores available</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {scores.length > 0 ? (
+                  scores.map((score) => (
+                    <tr key={score._id}>
+                      <td>{new Date(score.date).toLocaleDateString()}</td>
+                      <td>{new Date(score.date).toLocaleTimeString()}</td>
+                      <td>{score.score}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3">No test scores available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
