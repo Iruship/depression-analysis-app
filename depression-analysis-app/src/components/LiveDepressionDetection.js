@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import * as tf from '@tensorflow/tfjs';
 import './LiveDepressionDetection.css';
 
@@ -10,7 +9,6 @@ const LiveDepressionDetection = () => {
   const [isLiveDetectionStarted, setIsLiveDetectionStarted] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imageDepressionLevel, setImageDepressionLevel] = useState(null);
-  const navigate = useNavigate();
   const modelPath = 'model/model.json'; // Path to trained model
   let model;
 
@@ -88,8 +86,8 @@ const LiveDepressionDetection = () => {
       Angry: 0.8,
       Disgust: 0.6,
       Fear: 0.7,
-      Sad: 1.0,
-      Happy: 0.2,
+      Sad: 0.8,
+      Happy: 0.1,
       Neutral: 0.4,
       Surprise: 0.3,
     };
