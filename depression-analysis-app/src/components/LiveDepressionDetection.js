@@ -71,24 +71,27 @@ const LiveDepressionDetection = () => {
 
   // Preprocess image or video frame
   const preprocessFrame = (frame) => {
-    return frame
-      .resizeNearestNeighbor([48, 48])
-      .mean(2)
-      .expandDims(0)
-      .expandDims(-1)
-      .div(tf.scalar(255.0));
+    const tensor = frame
+      .resizeNearestNeighbor([48, 48]) // Resize to model's input size
+      .mean(2) // Convert to grayscale
+      .expandDims(0) // Add batch dimension
+      .expandDims(-1) // Add channel dimension
+      .div(tf.scalar(255.0)); // Normalize pixel values
+  
+    // Apply contrast enhancement
+    return tensor.sub(tensor.min()).div(tensor.max().sub(tensor.min()));
   };
 
   // Calculate depression score
   const calculateDepressionScore = (predictions) => {
     const depressionWeights = {
-      Angry: 0.9,
-      Disgust: 0.7,
-      Fear: 0.8,
+      Angry: 0.8,
+      Disgust: 0.6,
+      Fear: 0.7,
       Sad: 1.0,
-      Happy: 0.1,
-      Neutral: 0.3,
-      Surprise: 0.2,
+      Happy: 0.2,
+      Neutral: 0.4,
+      Surprise: 0.3,
     };
 
     const emotionLabels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise'];
