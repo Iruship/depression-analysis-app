@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './PHQTest.css';
+import { Link } from 'react-router-dom';
 
 const PHQTest = () => {
   const [answers, setAnswers] = useState(Array(9).fill(0));
@@ -84,46 +85,61 @@ const PHQTest = () => {
       <ToastContainer />
       <h1 className="text-center mb-4">PHQ-9 Test</h1>
       <p className="text-muted text-center mb-4">
-        The PHQ-9 is a multipurpose instrument for screening, diagnosing, monitoring, and measuring the severity of depression. Answer each question based on your experience over the past two weeks.
+        The PHQ-9 is a multipurpose instrument for screening, diagnosing, monitoring, and measuring the severity of depression.
       </p>
 
-      {questions.map((question, index) => (
-        <div key={index} className="question mb-4 p-3 rounded bg-light">
-          <p><strong>{index + 1}. {question}</strong></p>
-          <div className="options d-flex flex-wrap">
-            {options.map((option) => (
-              <label key={option.value} className="me-4">
-                <input
-                  type="radio"
-                  name={`question-${index}`}
-                  value={option.value}
-                  onChange={() => handleAnswerChange(index, option.value)}
-                />
-                <span className="ms-1">{option.label}</span>
-              </label>
-            ))}
-          </div>
+      <div className="phq-test-grid">
+        {/* Questions Section */}
+        <div className="questions-section">
+          {questions.map((question, index) => (
+            <div key={index} className="question mb-4 p-3 rounded bg-light">
+              <p><strong>{index + 1}. {question}</strong></p>
+              <div className="options d-flex flex-wrap">
+                {options.map((option) => (
+                  <label key={option.value} className="me-4">
+                    <input
+                      type="radio"
+                      name={`question-${index}`}
+                      value={option.value}
+                      onChange={() => handleAnswerChange(index, option.value)}
+                    />
+                    <span className="ms-1">{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
 
-      <button onClick={calculateScore} className="btn btn-primary w-100 mb-4">
-        Submit and Calculate Score
-      </button>
+        {/* Submission and Results Section */}
+        <div className="submit-section">
+          <button onClick={calculateScore} className="btn btn-primary mb-4 w-100">
+            Submit and Calculate Score
+          </button>
 
-      {score !== null && (
-        <div className="results p-3 rounded">
-          <h2>Your Score: {score}</h2>
-          <p className={score >= 15 ? "text-warning" : "text-success"}>{message}</p>
-          {score >= 15 && (
-            <div className="helplines alert alert-warning mt-3">
-              <h4>Helplines</h4>
-              <p>National Suicide Prevention Lifeline:********</p>
-              <p>Text HOME to **** to connect with a Crisis Counselor</p>
-              <p>For immediate assistance, call 119 or go to the nearest hospital.</p>
+          {score !== null && (
+            <div className="results p-3 rounded">
+              <h2>Your Score: {score}</h2>
+              <p className={score >= 15 ? "text-warning" : "text-success"}>{message}</p>
+              {score >= 15 && (
+                <div className="helplines alert alert-warning mt-3">
+                  <h4>Helplines</h4>
+                  <p>National Suicide Prevention Lifeline: 1926</p>
+                  <p>For more available helplines go to  https://findahelpline.com/countries/lk</p>
+                  <p>For immediate assistance, call 119 / 1926 or go to the nearest hospital.</p>
+                </div>
+              )}
             </div>
           )}
+
+          {/* Link to Help Line */}
+          <div className="help-link mt-4">
+            <Link to="/help-line" className="btn btn-link">
+              Need Help? Visit Our Help Line Page
+            </Link>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

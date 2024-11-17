@@ -1,40 +1,49 @@
+/* PHQ-9 Test Layout */
 .phq-test-container {
-    max-width: 800px;
-    margin: auto;
-  }
-  
-  .question {
-    border: 1px solid #e3e3e3;
-  }
-  
-  .options label {
-    font-size: 1.1em;
-    margin-right: 15px;
-    cursor: pointer;
-  }
-  
-  .results {
-    background-color: #f9f9f9;
-    border: 1px solid #e3e3e3;
-    margin-top: 20px;
-  }
-  
-  .results h2 {
-    font-size: 1.5em;
-  }
-  
-  .helplines {
-    margin-top: 15px;
-  }
-  
-  .btn-primary {
-    font-weight: bold;
-    background-color: #007bff;
-    border: none;
-  }
-  
-  .text-warning {
-    font-weight: bold;
-    color: #856404;
-  }
-  
+  display: flex;
+  flex-direction: column;
+}
+
+.phq-test-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* Questions Section */
+.questions-section {
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.question {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+/* Submit Section */
+.submit-section {
+  padding: 10px;
+  background-color: #e7f3ff;
+  border-radius: 10px;
+  border: 1px solid #88c8f7;
+}
+
+.results {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.help-link a {
+  text-decoration: none;
+  font-size: 16px;
+  color: #0056b3;
+}
+
+.help-link a:hover {
+  text-decoration: underline;
+}

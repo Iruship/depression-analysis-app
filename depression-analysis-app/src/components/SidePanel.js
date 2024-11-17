@@ -31,9 +31,6 @@ const SidePanel = ({ username }) => {
         <button className="transparent-button" onClick={() => navigate('/phq-test')}>
           PHQ-9 Test
         </button>
-        <button className="transparent-button" onClick={() => navigate('/image-upload')}>
-          Image Upload
-        </button>
         <button className="transparent-button" onClick={() => navigate('/help-line')}>
           Help Line
         </button>

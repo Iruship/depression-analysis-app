@@ -6,6 +6,8 @@ import Dashboard from './components/Dashboard';
 import PHQTest from './components/PHQTest';
 import LiveDepressionDetection from './components/LiveDepressionDetection';
 import AdminDashboard from './components/AdminDashboard';
+import HelpLine from './components/HelpLine';
+import AboutUs from './components/AboutUs';
 
 function App() {
   const isLoggedIn = !!localStorage.getItem('userId');
@@ -19,6 +21,8 @@ function App() {
         <Route path="/phq-test" element={<PHQTest />} />
         <Route path="/live-depression-detection" element={<LiveDepressionDetection />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/help-line" element={<HelpLine />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
     </Router>
   );
